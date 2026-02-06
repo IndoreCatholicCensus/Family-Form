@@ -1,0 +1,950 @@
+/* ==========================================================================
+   Holy Family Church — Premium Mobile-First UI (COMPLETE v2)
+   Clean, accessible, warm, professional - WITH ENHANCED CHECKBOXES
+   ========================================================================== */
+
+:root{
+  /* Core Colors */
+  --primary:#2563eb;
+  --primary-dark:#1e40af;
+  --primary-light:#dbeafe;
+  
+  /* Neutrals */
+  --bg:#f8fafc;
+  --card:#ffffff;
+  --text:#0f172a;
+  --text-secondary:#475569;
+  --muted:#64748b;
+  --border:#e2e8f0;
+  --border-focus:#93c5fd;
+  
+  /* Status Colors */
+  --success:#059669;
+  --success-bg:#d1fae5;
+  --warning:#d97706;
+  --warning-bg:#fef3c7;
+  --danger:#dc2626;
+  --danger-bg:#fee2e2;
+  --info:#0891b2;
+  --info-bg:#cffafe;
+
+  /* Spacing & Layout */
+  --radius:12px;
+  --radius-lg:16px;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.05);
+  --shadow:0 4px 6px -1px rgba(0,0,0,.1), 0 2px 4px -1px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 15px -3px rgba(0,0,0,.1), 0 4px 6px -2px rgba(0,0,0,.05);
+
+  /* Typography */
+  --font:system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+  --font-mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+
+/* ========== RESET ========== */
+*,*::before,*::after{ box-sizing:border-box; }
+*{ margin:0; }
+
+html{ 
+  height:100%;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+}
+
+body{
+  height:100%;
+  font-family:var(--font);
+  background:var(--bg);
+  color:var(--text);
+  line-height:1.5;
+  font-size:15px;
+}
+
+img{ display:block; max-width:100%; }
+
+/* ========== LAYOUT ========== */
+.container{
+  max-width:680px;
+  margin:0 auto;
+  padding:16px;
+}
+
+/* ========== HEADER ========== */
+.header{
+  background:var(--card);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);
+  padding:20px;
+  margin-bottom:20px;
+  border:1px solid var(--border);
+}
+
+.header img{
+  width:64px;
+  height:64px;
+  object-fit:contain;
+  margin:0 auto 16px;
+  display:block;
+}
+
+.header h1{
+  font-size:22px;
+  font-weight:700;
+  text-align:center;
+  color:var(--text);
+  letter-spacing:-0.02em;
+}
+
+.header h2{
+  font-size:16px;
+  font-weight:600;
+  color:var(--primary);
+  text-align:center;
+  margin-top:6px;
+}
+
+.header p{
+  font-size:14px;
+  color:var(--text-secondary);
+  text-align:center;
+  margin-top:12px;
+  line-height:1.6;
+  max-width:520px;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+/* ========== STEP INDICATOR ========== */
+.step-indicator{
+  display:flex;
+  gap:8px;
+  margin-bottom:20px;
+  padding:12px;
+  background:var(--card);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow-sm);
+  border:1px solid var(--border);
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+}
+
+.step{
+  flex:1;
+  min-width:90px;
+  padding:12px 8px;
+  border-radius:10px;
+  background:#f8fafc;
+  border:2px solid transparent;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:6px;
+  cursor:pointer;
+  user-select:none;
+  transition:all .2s ease;
+  text-align:center;
+}
+
+.step-number{
+  width:28px;
+  height:28px;
+  border-radius:999px;
+  background:#e2e8f0;
+  color:var(--text-secondary);
+  font-size:13px;
+  font-weight:700;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  transition:all .2s ease;
+}
+
+.step span:not(.step-number){
+  font-size:12px;
+  font-weight:600;
+  color:var(--muted);
+  transition:color .2s ease;
+}
+
+.step.active{
+  background:var(--primary-light);
+  border-color:var(--primary);
+}
+
+.step.active .step-number{
+  background:var(--primary);
+  color:white;
+}
+
+.step.active span:not(.step-number){
+  color:var(--primary);
+}
+
+.step.completed .step-number{
+  background:var(--success);
+  color:white;
+}
+
+.step.incomplete .step-number{
+  background:var(--warning);
+  color:white;
+}
+
+/* ========== FORM CARD ========== */
+.form-content{
+  background:var(--card);
+  border-radius:var(--radius-lg);
+  box-shadow:var(--shadow);
+  border:1px solid var(--border);
+  padding:24px 20px 120px;
+  margin-bottom:80px;
+}
+
+.section-title{
+  font-size:20px;
+  font-weight:700;
+  color:var(--text);
+  margin-bottom:20px;
+  letter-spacing:-0.02em;
+}
+
+.form-step{ display:none; }
+.form-step.active{ display:block; }
+
+/* ========== FORM GROUPS ========== */
+.form-group{
+  margin-bottom:20px;
+}
+
+label{
+  display:block;
+  font-size:14px;
+  font-weight:600;
+  color:var(--text);
+  margin-bottom:6px;
+  letter-spacing:-0.01em;
+}
+
+.required::after{
+  content:" *";
+  color:var(--danger);
+  font-weight:700;
+}
+
+.sub-label{
+  font-size:13px;
+  color:var(--muted);
+  margin-top:-3px;
+  margin-bottom:8px;
+  line-height:1.4;
+}
+
+/* ========== INPUTS ========== */
+input,select,textarea{
+  width:100%;
+  padding:12px 14px;
+  border-radius:10px;
+  border:1.5px solid var(--border);
+  background:white;
+  font-size:15px;
+  color:var(--text);
+  font-family:var(--font);
+  transition:all .15s ease;
+  appearance:none;
+}
+
+input::placeholder,textarea::placeholder{
+  color:#94a3b8;
+}
+
+input:hover,select:hover,textarea:hover{
+  border-color:#cbd5e1;
+}
+
+input:focus,select:focus,textarea:focus{
+  outline:none;
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px var(--border-focus);
+}
+
+select{
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-position:right 10px center;
+  background-repeat:no-repeat;
+  background-size:20px;
+  padding-right:40px;
+}
+
+textarea{
+  min-height:100px;
+  resize:vertical;
+  font-family:var(--font);
+}
+
+/* ========== GRID LAYOUTS ========== */
+.input-row{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.name-input{
+  display:grid;
+  grid-template-columns:100px 1fr 1fr;
+  gap:10px;
+}
+
+/* ========== CHECKBOXES (ENHANCED WITH CHECKMARK) ========== */
+.checkbox-group{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+
+.checkbox-group label{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:10px 12px;
+  border:1.5px solid var(--border);
+  border-radius:10px;
+  background:white;
+  font-size:14px;
+  font-weight:500;
+  cursor:pointer;
+  transition:all .2s ease;
+  margin:0;
+  position:relative;
+}
+
+.checkbox-group label:hover{
+  border-color:#cbd5e1;
+  background:#f8fafc;
+}
+
+/* Hide default checkbox, create custom one */
+.checkbox-group input[type="checkbox"]{
+  appearance:none;
+  -webkit-appearance:none;
+  width:20px;
+  height:20px;
+  min-width:20px;
+  margin:0;
+  cursor:pointer;
+  flex-shrink:0;
+  border:2px solid #cbd5e1;
+  border-radius:5px;
+  background:white;
+  position:relative;
+  transition:all .2s ease;
+}
+
+.checkbox-group input[type="checkbox"]:hover{
+  border-color:#94a3b8;
+}
+
+/* Checkmark when checked */
+.checkbox-group input[type="checkbox"]:checked{
+  background:var(--primary);
+  border-color:var(--primary);
+}
+
+.checkbox-group input[type="checkbox"]:checked::after{
+  content:'';
+  position:absolute;
+  left:6px;
+  top:2px;
+  width:5px;
+  height:10px;
+  border:solid white;
+  border-width:0 2px 2px 0;
+  transform:rotate(45deg);
+}
+
+/* Enhanced visual feedback when checked */
+.checkbox-group label:has(input[type="checkbox"]:checked){
+  background:#eff6ff;
+  border-color:var(--primary);
+}
+
+/* ========== CHILD SECTIONS ========== */
+.child-section{
+  border:1.5px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px;
+  margin-top:16px;
+  background:#fafbfc;
+}
+
+.child-section h3{
+  font-size:16px;
+  font-weight:700;
+  color:var(--text);
+  margin-bottom:16px;
+  letter-spacing:-0.01em;
+}
+
+/* ========== MESSAGES ========== */
+#messageContainer{ 
+  margin-bottom:16px;
+  position:sticky;
+  top:16px;
+  z-index:100;
+}
+
+.message{
+  padding:14px 16px;
+  border-radius:12px;
+  font-size:14px;
+  margin-bottom:10px;
+  border:1.5px solid transparent;
+  line-height:1.5;
+  box-shadow:var(--shadow-sm);
+}
+
+.message.success{
+  background:var(--success-bg);
+  border-color:var(--success);
+  color:#064e3b;
+}
+
+.message.info{
+  background:var(--info-bg);
+  border-color:var(--info);
+  color:#164e63;
+}
+
+.message.warning{
+  background:var(--warning-bg);
+  border-color:var(--warning);
+  color:#78350f;
+}
+
+.message.error{
+  background:var(--danger-bg);
+  border-color:var(--danger);
+  color:#7f1d1d;
+}
+
+.message.error h3{
+  color:#991b1b;
+  font-size:15px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+
+.message.error strong{
+  color:#991b1b;
+  font-weight:600;
+}
+
+.message.error ul{
+  margin:8px 0 0 20px;
+  padding:0;
+}
+
+.message.error li{
+  margin:4px 0;
+  color:#7f1d1d;
+}
+
+.message.error div{
+  color:#7f1d1d;
+}
+
+/* ========== STICKY ACTIONS ========== */
+.sticky-actions{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  background:rgba(255,255,255,.95);
+  backdrop-filter:blur(12px);
+  border-top:1px solid var(--border);
+  padding:12px 16px;
+  box-shadow:0 -4px 6px -1px rgba(0,0,0,.05);
+  z-index:50;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:10px;
+}
+
+.btn-group{
+  display:flex;
+  gap:8px;
+}
+
+/* ========== BUTTONS ========== */
+.btn{
+  padding:10px 18px;
+  border-radius:10px;
+  border:none;
+  font-size:14px;
+  font-weight:600;
+  cursor:pointer;
+  transition:all .15s ease;
+  white-space:nowrap;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  gap:6px;
+}
+
+.btn:active{
+  transform:scale(.98);
+}
+
+.btn-primary{
+  background:var(--primary);
+  color:white;
+  box-shadow:var(--shadow-sm);
+}
+
+.btn-primary:hover{
+  background:var(--primary-dark);
+}
+
+.btn-secondary{
+  background:#f1f5f9;
+  color:var(--text);
+  border:1.5px solid var(--border);
+}
+
+.btn-secondary:hover{
+  background:#e2e8f0;
+}
+
+.btn-save-draft{
+  background:white;
+  color:var(--text-secondary);
+  border:1.5px dashed var(--border);
+  font-size:13px;
+}
+
+.btn-save-draft:hover{
+  border-color:#cbd5e1;
+  background:#f8fafc;
+}
+
+/* ========== REVIEW PAGE ========== */
+#reviewContent{
+  background:#fafbfc;
+  border:1.5px solid var(--border);
+  border-radius:var(--radius);
+  padding:20px;
+}
+
+.review-section{
+  background:white;
+  border:1px solid var(--border);
+  border-radius:10px;
+  padding:16px;
+  margin-bottom:14px;
+}
+
+.review-section h3{
+  font-size:15px;
+  font-weight:700;
+  color:var(--text);
+  margin-bottom:12px;
+  padding-bottom:10px;
+  border-bottom:1.5px solid var(--border);
+}
+
+.review-item{
+  font-size:14px;
+  margin:8px 0;
+  color:var(--text-secondary);
+  line-height:1.6;
+}
+
+.review-item strong{
+  color:var(--text);
+  font-weight:600;
+  display:inline-block;
+  min-width:140px;
+}
+
+/* ========== LOADING OVERLAY ========== */
+.loading-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(15,23,42,.6);
+  backdrop-filter:blur(4px);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+}
+
+.loading-overlay.show{ display:flex; }
+
+.loading-content{
+  background:white;
+  padding:32px;
+  border-radius:16px;
+  box-shadow:var(--shadow-lg);
+  text-align:center;
+  max-width:90%;
+}
+
+.loading-content h3{
+  font-size:16px;
+  font-weight:600;
+  color:var(--text);
+  margin-top:16px;
+}
+
+.loading-content p{
+  font-size:14px;
+  color:var(--muted);
+  margin-top:4px;
+}
+
+.spinner{
+  width:40px;
+  height:40px;
+  border-radius:999px;
+  border:3px solid #e2e8f0;
+  border-top-color:var(--primary);
+  animation:spin .7s linear infinite;
+  margin:0 auto;
+}
+
+@keyframes spin{ 
+  to{ transform:rotate(360deg); } 
+}
+
+/* ========== UTILITIES ========== */
+.hidden{ display:none !important; }
+
+/* ========== RESPONSIVE ========== */
+@media (max-width:640px){
+  .container{ padding:12px; }
+  
+  .header{
+    padding:16px;
+    margin-bottom:16px;
+  }
+  
+  .header img{
+    width:56px;
+    height:56px;
+    margin-bottom:12px;
+  }
+  
+  .header h1{ font-size:19px; }
+  .header h2{ font-size:15px; }
+  .header p{ font-size:13px; }
+  
+  .step-indicator{
+    padding:8px;
+    gap:6px;
+  }
+  
+  .step{
+    min-width:75px;
+    padding:10px 6px;
+  }
+  
+  .step span:not(.step-number){
+    font-size:11px;
+  }
+  
+  .form-content{
+    padding:20px 16px 100px;
+    margin-bottom:60px;
+  }
+  
+  .section-title{
+    font-size:18px;
+    margin-bottom:16px;
+  }
+  
+  .input-row,
+  .name-input{
+    grid-template-columns:1fr;
+    gap:14px;
+  }
+  
+  .checkbox-group{
+    grid-template-columns:1fr;
+  }
+  
+  .child-section{
+    padding:16px;
+  }
+  
+  .sticky-actions{
+    padding:10px 12px;
+    flex-wrap:wrap;
+  }
+  
+  .btn-group{
+    flex:1;
+    width:100%;
+  }
+  
+  .btn{
+    flex:1;
+    padding:11px 14px;
+    font-size:13px;
+  }
+  
+  .btn-save-draft{
+    width:100%;
+    order:3;
+  }
+}
+
+/* ========== ACCESSIBILITY ========== */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{
+    animation-duration:0.01ms !important;
+    animation-iteration-count:1 !important;
+    transition-duration:0.01ms !important;
+  }
+}
+
+/* Focus visible for keyboard navigation */
+.step:focus-visible{
+  outline:2px solid var(--primary);
+  outline-offset:2px;
+}
+
+/* Print styles */
+@media print{
+  .sticky-actions,
+  .step-indicator{ display:none; }
+  .form-content{ box-shadow:none; }
+}
+
+* ========== REQUIRED FIELD ERROR HIGHLIGHT (MOBILE FRIENDLY) ========== */
+input.error, select.error, textarea.error{
+  border-color: var(--danger) !important;
+  background: #fff5f5;
+}
+
+.form-group.has-error label{
+  color: #991b1b;
+}
+
+/* Checkbox group: highlight the whole group since input itself is custom/hidden */
+.form-group.has-error .checkbox-group{
+  border: 1.5px solid var(--danger);
+  border-radius: 12px;
+  padding: 10px;
+  background: #fff5f5;
+}
+
+.form-group.has-error .checkbox-group label{
+  border-color: #fca5a5;
+}
+
+/* ================================
+   Post-submission success UI
+   ================================ */
+
+.success-card {
+  padding: 16px;
+  border-radius: 10px;
+}
+
+.success-title {
+  font-weight: 700;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.receipt-id {
+  font-weight: 800;
+  font-size: 18px;
+  letter-spacing: 0.5px;
+  margin: 6px 0 2px;
+}
+
+.post-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+  flex-wrap: wrap;
+}
+
+.btn.btn-secondary {
+  opacity: 0.9;
+}
+
+/* --- Post-submit UI state fixes --- */
+body.post-submit #submitBtn,
+body.post-submit .nav-buttons,
+body.post-submit .footer-actions,
+body.post-submit #saveDraftBtn {
+  display: none !important;
+}
+
+body.post-submit #reviewSection .primary-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 14px;
+}
+
+/* Make Done visually primary */
+body.post-submit #reviewSection .btn-done {
+  padding: 10px 18px;
+  font-weight: 700;
+  border-radius: 10px;
+}
+
+/* Make "Submit another" secondary */
+body.post-submit #reviewSection .btn-another {
+  opacity: 0.85;
+}
+
+/* ==========================================================================
+   FIX #3: POST-SUBMIT UI POLISH (OPTIONAL ENHANCEMENTS)
+   Add these styles to the END of your styles.css file
+   ========================================================================== */
+
+/* Hide sticky-actions bar when form is submitted */
+body.hfc-submitted .sticky-actions,
+body.hfc-submitted .form-navigation {
+  display: none !important;
+}
+
+/* Smooth fade-in animation for success panel */
+#successPanel {
+  animation: fadeInSlideUp 0.5s ease-out;
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Collapsed state after DONE - smoother transition */
+#successPanel.collapsed {
+  animation: collapseToCenter 0.4s ease-out;
+}
+
+@keyframes collapseToCenter {
+  from {
+    padding: 18px;
+    max-height: 400px;
+  }
+  to {
+    padding: 20px;
+    max-height: 300px;
+  }
+}
+
+/* Receipt ID pulse effect (subtle attention grabber) */
+#successPanel [style*="font-size:18px"] {
+  animation: subtlePulse 2s ease-in-out infinite;
+}
+
+@keyframes subtlePulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.85;
+  }
+}
+
+/* Button hover states for post-submit buttons */
+#doneBtn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+  transition: all 0.2s ease;
+}
+
+#submitAnotherBtn:hover,
+#submitAnotherBtn2:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+}
+
+/* Success checkmark animation */
+#successPanel h2::before {
+  content: '✅';
+  display: inline-block;
+  animation: checkmarkPop 0.6s ease-out;
+}
+
+@keyframes checkmarkPop {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* Receipt ID box glow effect */
+#successPanel div[style*="border:1px solid #d1fae5"] {
+  transition: box-shadow 0.3s ease;
+}
+
+#successPanel div[style*="border:1px solid #d1fae5"]:hover {
+  box-shadow: 0 0 0 3px rgba(187, 247, 208, 0.3);
+}
+
+/* Smooth transition for collapsed state */
+#successPanel * {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+/* Disable animations for users who prefer reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  #successPanel,
+  #successPanel *,
+  #doneBtn,
+  #submitAnotherBtn,
+  #submitAnotherBtn2 {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* Mobile responsive adjustments for post-submit */
+@media (max-width: 640px) {
+  #successPanel {
+    padding: 16px !important;
+  }
+  
+  #successPanel h2 {
+    font-size: 18px !important;
+  }
+  
+  #successPanel div[style*="font-size:48px"] {
+    font-size: 40px !important;
+  }
+}
+
+/* Loading state before submit completes */
+.submitting #successPanel {
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+/* Focus states for accessibility */
+#doneBtn:focus-visible,
+#submitAnotherBtn:focus-visible,
+#submitAnotherBtn2:focus-visible {
+  outline: 3px solid #93c5fd;
+  outline-offset: 2px;
+}
+
