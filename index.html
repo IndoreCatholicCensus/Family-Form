@@ -1,0 +1,460 @@
+
+
+
+
+
+
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Holy Family Church Pipliyakumar Family Information Form">
+    <title>HFC Family Information Form</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="https://www.jotform.com/uploads/vinzalexm/form_files/tree-a-holy-family--image_15496425.67b580ef2b04e0.54838074.png" alt="HFC Logo">
+            <h1>Holy Family Church PipliyaKumar</h1>
+            <h2>Family Information Form</h2>
+            <p>The details in this form are solicited by the Catholic Diocese of Indore and every family is required to furnish the information.</p>
+        </div>
+
+        <div class="step-indicator" aria-label="Form progress">
+            <div class="step step-link active" data-step="1" role="button" tabindex="0" aria-label="Go to Basic step">
+                <span class="step-number">1</span>
+                <span>Basic</span>
+            </div>
+            <div class="step step-link" data-step="2" role="button" tabindex="0" aria-label="Go to Children step">
+                <span class="step-number">2</span>
+                <span>Children</span>
+            </div>
+            <div class="step step-link" data-step="3" role="button" tabindex="0" aria-label="Go to Community step">
+                <span class="step-number">3</span>
+                <span>Community</span>
+            </div>
+            <div class="step step-link" data-step="4" role="button" tabindex="0" aria-label="Go to Additional step">
+                <span class="step-number">4</span>
+                <span>Additional</span>
+            </div>
+            <div class="step step-link" data-step="5" role="button" tabindex="0" aria-label="Go to Review step">
+                <span class="step-number">5</span>
+                <span>Review</span>
+            </div>
+        </div>
+
+        <div class="form-content">
+            <div id="messageContainer"></div>
+
+            <form id="censusForm" novalidate>
+              <!-- ===== HONEYPOT ANTI-SPAM FIELDS (DO NOT REMOVE) ===== -->
+              <!-- Hidden from humans, visible to bots. If filled, submission is rejected. -->
+              <div style="position:absolute;left:-9999px;top:-9999px;opacity:0;pointer-events:none;" aria-hidden="true" tabindex="-1">
+                <label for="hp-website">Website</label>
+                <input type="text" name="website" id="hp-website" value="" tabindex="-1" autocomplete="off">
+    
+                <label for="hp-hp">Company</label>
+                <input type="text" name="hp" id="hp-hp" value="" tabindex="-1" autocomplete="off">
+    
+                <label for="hp-honeypot">URL</label>
+                <input type="text" name="honeypot" id="hp-honeypot" value="" tabindex="-1" autocomplete="off">
+    
+                <label for="hp-company">Business Website</label>
+                <input type="text" name="company_website" id="hp-company" value="" tabindex="-1" autocomplete="off">
+              </div>
+              <!-- ===== END HONEYPOT ===== -->
+              <!-- STEP 1: Basic Information -->
+                <div class="form-step active" data-step="1">
+                    <h2 class="section-title">Basic Family Information</h2>
+                    
+                    <div class="form-group">
+                        <label class="required">Name of Head of Family</label>
+                        <div class="sub-label">परिवार के मुखिया का नाम (उपसर्ग/पहला नाम/उपनाम)</div>
+                        <div class="name-input">
+                            <select name="head_prefix" required>
+                                <option value="Mr.">Mr.</option>
+                                <option value="Mrs.">Mrs.</option>
+                            </select>
+                            <input type="text" name="head_firstname" placeholder="First Name" required data-type="text-only" maxlength="40">
+                            <input type="text" name="head_lastname" placeholder="Last Name" required data-type="text-only" maxlength="40">
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="form-group">
+                            <label class="required">DOB of Head</label>
+                            <div class="sub-label">परिवार के मुखिया की जन्म तिथि चुनें</div>
+                            <input type="date" name="head_dob" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Place of Birth</label>
+                            <div class="sub-label">जन्म स्थान (शहर/गांव) लिखें</div>
+                            <input type="text" name="head_birthplace" required data-type="text-only" maxlength="60">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="required">Profession of Head of Family</label>
+                        <div class="sub-label">परिवार के मुखिया का पेशा</div>
+                        <select name="head_profession" id="headProfession" required>
+                            <option value="">Select</option>
+                            <option value="Business">Business</option>
+                            <option value="State Government Employee">State Government Employee</option>
+                            <option value="Central Government Employee">Central Government Employee</option>
+                            <option value="Self Employed Professional">Self Employed Professional</option>
+                            <option value="Private Sector">Private Sector</option>
+                            <option value="Homemaker">Homemaker</option>
+                            <option value="Retired">Retired</option>
+                            <option value="Not working anywhere">Not working anywhere</option>
+                            <option value="Prefer not to say">Prefer not to say</option>
+                        </select>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="form-group">
+                            <label class="required">Blood Group</label>
+                            <div class="sub-label">रक्त समूह चुनें</div>
+                            <select name="head_blood_group" required>
+                                <option value="">Select</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="required">Mobile Number</label>
+                            <div class="sub-label">10 अंकों का मोबाइल नंबर दर्ज करें</div>
+                            <input type="tel" name="head_mobile" placeholder="98260 12345" required data-type="phone" inputmode="numeric" autocomplete="tel" pattern="\d{10}" maxlength="13">
+                        </div>
+                    </div>
+
+                    <!-- FIX #2: Added "Other" blood group specify field for Head -->
+                    <div class="form-group hidden" id="headBloodOtherGroup">
+                        <label class="required">Specify Blood Group</label>
+                        <div class="sub-label">यदि “Other” चुना है तो यहाँ लिखें</div>
+                        <input type="text" name="head_blood_group_other" placeholder="e.g., Bombay Blood Group" maxlength="30">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Marital Status</label>
+                        <div class="sub-label">अपनी वैवाहिक स्थिति चुनें</div>
+                        <select name="marital_status" id="maritalStatus" required>
+                            <option value="">Select</option>
+                            <option value="Married">Married</option>
+                            <option value="Divorced">Divorced</option>
+                            <option value="Separated">Separated</option>
+                            <option value="Spouse Deceased">Spouse Deceased</option>
+                            <option value="Single">Single</option>
+                        </select>
+                    </div>
+
+                    <div id="spouseSection">
+                        <div class="form-group">
+                            <label>Spouse Name</label>
+                            <div class="sub-label">जीवनसाथी का नाम (यदि लागू हो)</div>
+                            <div class="name-input">
+                                <select name="spouse_prefix">
+                                    <option value="">Select</option>
+                                    <option value="Mrs.">Mrs.</option>
+                                    <option value="Mr.">Mr.</option>
+                                    <option value="Late.">Late.</option>
+                                </select>
+                                <input type="text" name="spouse_firstname" placeholder="First Name" data-type="text-only" maxlength="40">
+                                <input type="text" name="spouse_lastname" placeholder="Last Name" data-type="text-only" maxlength="40">
+                            </div>
+                        </div>
+
+                        <div class="input-row">
+                            <div class="form-group">
+                                <label>DOB of Spouse</label>
+                                <div class="sub-label">जीवनसाथी की जन्म तिथि चुनें (यदि लागू हो)</div>
+                                <input type="date" name="spouse_dob">
+                            </div>
+                            <div class="form-group">
+                                <label>Blood Group</label>
+                                <div class="sub-label">रक्त समूह चुनें</div>
+                                <select name="spouse_blood_group">
+                                    <option value="">Select</option>
+                                    <option value="A+">A+</option>
+                                    <option value="A-">A-</option>
+                                    <option value="B+">B+</option>
+                                    <option value="B-">B-</option>
+                                    <option value="AB+">AB+</option>
+                                    <option value="AB-">AB-</option>
+                                    <option value="O+">O+</option>
+                                    <option value="O-">O-</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Spouse "Other" blood group field -->
+                        <div class="form-group hidden" id="spouseBloodOtherGroup">
+                            <label class="required">Specify Blood Group</label>
+                            <div class="sub-label">यदि “Other” चुना है तो यहाँ लिखें</div>
+                            <input type="text" name="spouse_blood_group_other" placeholder="e.g., Bombay Blood Group" maxlength="30">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Spouse Mobile</label>
+                            <div class="sub-label">जीवनसाथी का मोबाइल नंबर (10 अंक)</div>
+                            <input type="tel" name="spouse_mobile" placeholder="98260 12345" data-type="phone" inputmode="numeric" autocomplete="tel" pattern="\d{10}" maxlength="13">
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Family Settled As</label>
+                        <div class="sub-label">परिवार की बसावट/स्थिति चुनें</div>
+                        <select name="settlement_type" required>
+                            <option value="">Select</option>
+                            <option value="Permanent">Permanently Settled</option>
+                            <option value="Temporary">Temporary</option>
+                            <option value="Transferable">Transferable Job</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Address</label>
+                        <div class="sub-label">पूरा वर्तमान पता दर्ज करें</div>
+                        <input type="text" name="address_house" placeholder="House/Flat No." required style="margin-bottom: 10px;" maxlength="60">
+                        <input type="text" name="address_street" placeholder="Street/Locality" style="margin-bottom: 10px;" maxlength="80">
+                        <div class="input-row">
+                            <input type="text" name="address_city" placeholder="City" required data-type="text-only" maxlength="40">
+                            <input type="text" name="address_state" placeholder="State" value="Madhya Pradesh" data-type="text-only" maxlength="40">
+                        </div>
+                        <input type="tel" name="address_pincode" placeholder="PIN Code" data-type="pincode" maxlength="6" style="margin-top: 10px;" inputmode="numeric" autocomplete="postal-code" pattern="\d{6}">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Email</label>
+                        <div class="sub-label">सही ईमेल लिखें (पुष्टि/सूचना इसी पर आएगी)</div>
+                        <input type="email" name="email" placeholder="johndoe@gmail.com" required autocomplete="email" maxlength="100">
+                        <div class="sub-label">Confirmation will be sent here</div>
+                        <div class="sub-label">पुष्टि संदेश इसी ईमेल पर भेजा जाएगा</div>
+                    </div>
+                </div>
+
+                <!-- STEP 2: Children -->
+                <div class="form-step" data-step="2">
+                    <h2 class="section-title">Children Information</h2>
+                    
+                    <div class="form-group">
+                        <label class="required">Number of Children</label>
+                        <div class="sub-label">परिवार में कुल बच्चों की संख्या चुनें</div>
+                        <select name="num_children" id="numChildren" required>
+                            <option value="">Select</option>
+                            <option value="0">0</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                        </select>
+                    </div>
+
+                    <div id="childrenContainer"></div>
+                </div>
+
+                <!-- STEP 3: Community -->
+                <div class="form-step" data-step="3">
+                    <h2 class="section-title">Rite & Community</h2>
+                    
+                    <div class="input-row">
+                        <div class="form-group">
+                            <label class="required">Rite</label>
+                            <div class="sub-label">अपनी रीति चुनें</div>
+                            <select name="rite" id="riteSelect" required>
+                                <option value="">Select</option>
+                                <option value="Latin">Latin</option>
+                                <option value="Syro Malankara">Syro Malankara</option>
+                                <option value="Syro Malabar">Syro Malabar</option>
+                                <option value="Knanaya">Knanaya</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group hidden" id="otherRiteGroup">
+                            <label class="required">Specify Other</label>
+                            <div class="sub-label">यदि “Other” चुना है तो यहाँ लिखें</div>
+                            <input type="text" name="rite_other" data-type="text-only" maxlength="40">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Caste Category</label>
+                        <div class="sub-label">अपनी श्रेणी चुनें</div>
+                        <select name="caste_category" required>
+                            <option value="">Select</option>
+                            <option value="General">General</option>
+                            <option value="SC">SC</option>
+                            <option value="ST">ST</option>
+                            <option value="OBC">OBC</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="required">Ethnic Community</label>
+                        <div class="sub-label">उदाहरण: Malayalee, Hindi Speaking</div>
+                        <input type="text" name="ethnic_community" placeholder="e.g., Malayalee, Hindi Speaking" required data-type="text-only" maxlength="40">
+                    </div>
+
+                    <div class="input-row">
+                        <div class="form-group">
+                            <label>Home Diocese</label>
+                            <div class="sub-label">मूल डायोसिस (यदि ज्ञात हो)</div>
+                            <input type="text" name="home_diocese" data-type="text-only" placeholder="e.g., Indore" maxlength="60">
+                        </div>
+                        <!-- FIX #5: Added text-only validation -->
+                        <div class="form-group">
+                            <label>Home Parish</label>
+                            <div class="sub-label">मूल पैरिश/चर्च (यदि ज्ञात हो)</div>
+                            <input type="text" name="home_parish" placeholder="e.g., Holy Family Church" data-type="text-only" maxlength="80">
+                        </div>
+                    </div>
+
+                    <h3 style="font-size: 16px; color: var(--primary); margin: 25px 0 12px; font-weight: 700;">Dependents Living With You</h3>
+                    <div class="sub-label">यदि कोई आश्रित आपके साथ रहते हों तो चुनें</div>
+
+                    <div class="form-group">
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="dependents" value="Father"> Father</label>
+                            <label><input type="checkbox" name="dependents" value="Mother"> Mother</label>
+                            <label><input type="checkbox" name="dependents" value="Father-in-Law"> Father-in-Law</label>
+                            <label><input type="checkbox" name="dependents" value="Mother-in-Law"> Mother-in-Law</label>
+                            <label><input type="checkbox" name="dependents" value="Brother"> Brother</label>
+                            <label><input type="checkbox" name="dependents" value="Sister"> Sister</label>
+                            <label><input type="checkbox" name="dependents" value="Other"> Other</label>
+                        </div>
+                    </div>
+
+                    <div id="dependentsContainer"></div>
+                </div>
+
+                <!-- STEP 4: Additional Info -->
+                <div class="form-step" data-step="4">
+                    <h2 class="section-title">Additional Information</h2>
+                    
+                    <div class="input-row">
+                        <div class="form-group">
+                            <label>Known Illness</label>
+                            <div class="sub-label">यदि कोई ज्ञात बीमारी हो तो चुनें</div>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="illness" value="Diabetes"> Diabetes</label>
+                                <label><input type="checkbox" name="illness" value="Hypertension"> Hypertension</label>
+                                <label><input type="checkbox" name="illness" value="Heart Disease"> Heart Disease</label>
+                                <label><input type="checkbox" name="illness" value="Cancer"> Cancer</label>
+                                <label><input type="checkbox" name="illness" value="Asthma"> Asthma</label>
+                                <label><input type="checkbox" name="illness" value="Other"> Other</label>
+                                <label><input type="checkbox" name="illness" value="None"> None</label>
+                            </div>
+                            <input type="text" name="illness_other" placeholder="Specify" class="hidden" id="illnessOther" style="margin-top: 10px;" maxlength="100">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Known Conditions</label>
+                            <div class="sub-label">यदि कोई स्थिति/असमर्थता हो तो चुनें</div>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="conditions" value="Physical Disability"> Physical Disability</label>
+                                <label><input type="checkbox" name="conditions" value="Visual Impairment"> Visual Impairment</label>
+                                <label><input type="checkbox" name="conditions" value="Hearing Impairment"> Hearing Impairment</label>
+                                <label><input type="checkbox" name="conditions" value="Mental Challenges"> Mental Challenges</label>
+                                <label><input type="checkbox" name="conditions" value="Other"> Other</label>
+                                <label><input type="checkbox" name="conditions" value="None"> None</label>
+                            </div>
+                            <input type="text" name="condition_other" placeholder="Specify" class="hidden" id="conditionOther" style="margin-top: 10px;" maxlength="100">
+                        </div>
+                    </div>
+
+                    <div class="input-row">
+                        <div class="form-group">
+                            <label>Insurance</label>
+                            <div class="sub-label">परिवार के पास उपलब्ध बीमा चुनें</div>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="insurance" value="LIC"> Life Insurance</label>
+                                <label><input type="checkbox" name="insurance" value="Health"> Health Insurance</label>
+                                <label><input type="checkbox" name="insurance" value="Ayushman"> Ayushman Bharat</label>
+                                <label><input type="checkbox" name="insurance" value="Other"> Other</label>
+                                <label><input type="checkbox" name="insurance" value="None"> None</label>
+                            </div>
+                            <input type="text" name="insurance_other" placeholder="Specify" class="hidden" id="insuranceOther" style="margin-top: 10px;" maxlength="80">
+                        </div>
+
+                        <div class="form-group">
+                            <label>Vehicle Ownership</label>
+                            <div class="sub-label">परिवार के पास वाहन हों तो चुनें</div>
+                            <div class="checkbox-group">
+                                <label><input type="checkbox" name="vehicle" value="Two Wheeler"> Two Wheeler</label>
+                                <label><input type="checkbox" name="vehicle" value="Car"> Car</label>
+                                <label><input type="checkbox" name="vehicle" value="Van/Bus"> Van/Bus</label>
+                                <label><input type="checkbox" name="vehicle" value="Truck"> Truck</label>
+                                <label><input type="checkbox" name="vehicle" value="Other"> Other</label>
+                                <label><input type="checkbox" name="vehicle" value="None"> None</label>
+                            </div>
+                            <input type="text" name="vehicle_other" placeholder="Specify" class="hidden" id="vehicleOther" style="margin-top: 10px;" maxlength="80">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Job Opportunity Seeker</label>
+                        <div class="sub-label">यदि किसी को नौकरी/रोजगार की आवश्यकता हो तो चुनें</div>
+                        <select name="job_seeking" id="jobSeeking">
+                            <option value="">Select</option>
+                            <option value="No">No</option>
+                            <option value="Yes - Family">Yes - Family Member</option>
+                            <option value="Yes - Relative">Yes - Relative</option>
+                        </select>
+                        <div class="sub-label">If yes, please share basic details (up to 5 people)</div>
+                        <div class="sub-label">यदि हाँ, तो अधिकतम 5 लोगों की मूल जानकारी दें</div>
+                        
+                    </div>
+
+                    <div id="jobSeekerContainer" class="hidden"></div>
+                </div>
+
+                <!-- STEP 5: Review -->
+                <div class="form-step" data-step="5">
+                    <h2 class="section-title">Review & Submit</h2>
+                    <div id="reviewContent"></div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="sticky-actions" aria-label="Form navigation">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-secondary" id="prevBtn">Previous</button>
+                        <button type="button" class="btn btn-primary" id="nextBtn">Next</button>
+                        <button type="submit" class="btn btn-primary hidden" id="submitBtn">Submit Form</button>
+                    </div>
+
+                    <button type="button" class="btn btn-save-draft" onclick="saveDraft()">💾 Save Draft</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <h3>Submitting...</h3>
+            <p style="margin-top: 10px; color: #6b7280;">Please wait</p>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/validation.js"></script>
+    <script src="js/form-logic.js"></script>
+    <script src="js/children.js"></script>
+    <script src="js/submit.js"></script>
+</body>
+</html>
