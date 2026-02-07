@@ -40,11 +40,12 @@
         $(element).datepicker({
             changeMonth: true,
             changeYear: true,
-            yearRange: '1920:' + currentYear, // Automatically includes current year
+            yearRange: '1920:' + currentYear,
             dateFormat: 'yy-mm-dd',
-            maxDate: today, // Can't select future dates
+            maxDate: today,
             defaultDate: new Date(2010, 0, 1),
-            showButtonPanel: false
+            showButtonPanel: false,
+            onSelect: function () { $(this).trigger('change'); }
         });
     };
 

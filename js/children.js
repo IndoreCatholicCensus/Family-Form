@@ -30,7 +30,7 @@ function createChildSection(num) {
 
         <div class="form-group">
             <label class="required">Date of Birth</label>
-            <input type="date" name="child${num}_dob" id="child${num}Dob" required max="${new Date().toISOString().split('T')[0]}">
+            <input type="text" name="child${num}_dob" id="child${num}Dob" class="datepicker" placeholder="Select Date" required readonly>
             <input type="hidden" id="child${num}Age">
         </div>
 
@@ -91,6 +91,14 @@ function createChildSection(num) {
     `;
 
     setupChildEventListeners(num, div);
+    // Initialize datepicker for this child
+    const dobInput = div.querySelector(`#child${num}Dob`);
+    if (dobInput && typeof window.initChildDatepicker === 'function') {
+        // Use setTimeout to ensure DOM is ready
+        setTimeout(() => {
+            window.initChildDatepicker(dobInput);
+        }, 100);
+    }
     return div;
 }
 

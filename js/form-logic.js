@@ -498,7 +498,14 @@ function buildChildrenSections(num) {
     const safeNum = Math.max(0, Math.min(num, max));
 
     for (let i = 1; i <= safeNum; i++) {
-        container.appendChild(createChildSection(i));
+        const section = createChildSection(i);
+        container.appendChild(section);
+
+        // ✅ IMPORTANT: init datepicker AFTER section is in the DOM (mobile fix)
+        const dobInput = section.querySelector(`#child${i}Dob`);
+        if (dobInput && typeof window.initChildDatepicker === 'function') {
+            window.initChildDatepicker(dobInput);
+        }
     }
 
     applyValidationToElement?.(container);
