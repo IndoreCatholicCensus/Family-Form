@@ -521,6 +521,26 @@ textarea{
   font-size:13px;
 }
 
+.btn-load-draft {
+    background: #059669;
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-load-draft:hover {
+    background: #047857;
+    transform: translateY(-1px);
+}
+
+.btn-load-draft.hidden {
+    display: none;
+}
+
 .btn-save-draft:hover{
   border-color:#cbd5e1;
   background:#f8fafc;
