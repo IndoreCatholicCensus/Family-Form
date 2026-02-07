@@ -13,7 +13,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     gotoStep(1, { skipScroll: true });
     loadDraft();
-
+    
+    // Navigation buttons
+    document.getElementById('loadDraftBtn')?.addEventListener('click', manualLoadDraft);
     document.getElementById('prevBtn')?.addEventListener('click', () => changeStep(-1));
     document.getElementById('nextBtn')?.addEventListener('click', () => changeStep(1));
 
@@ -609,8 +611,156 @@ function loadDraft() {
     let draft;
     try { draft = JSON.parse(raw); } catch (_) { return; }
 
-    const ok = confirm('A saved draft was found. Would you like to load it?');
-    if (!ok) return;
+    // Show the Load Draft button
+    const loadBtn = document.getElementById('loadDraftBtn');
+    if (loadBtn) loadBtn.classList.remove('hidden');
+
+    // Show non-intrusive notification
+    if (typeof showMessage === 'function') {
+        showMessage('info', '💾 A saved draft was found. Click "Load Draft" button to restore it.', 8000);
+    }
+    return; // Don't auto-load
+
+function manualLoadDraft() {
+    console.log('Load Draft button clicked!'); // DEBUG
+    const raw = localStorage.getItem('hfc_draft');
+    console.log('Draft data:', raw); // DEBUG
+    
+    if (!raw) {
+        showMessage?.('warning', 'No saved draft found.', 3000);
+        return;
+    }
+
+function manualLoadDraft() {
+    const raw = localStorage.getItem('hfc_draft');
+    if (!raw) {
+        showMessage('warning', 'No saved draft found.', 2500);
+        return;
+    }
+
+    let draft;
+    try { draft = JSON.parse(raw); } catch (_) {
+        showMessage('warning', 'Draft is corrupted and cannot be loaded.', 3000);
+        return;
+    }
+
+    const form = document.getElementById('censusForm');
+    if (!form) return;
+
+    const values = draft.values || draft;
+
+    // rebuild children first
+    const savedChildrenCount = parseInt(values.num_children || '0', 10) || 0;
+    const numChildrenEl = document.getElementById('numChildren');
+    if (numChildrenEl) {
+        numChildrenEl.value = String(savedChildrenCount);
+        buildChildrenSections(savedChildrenCount);
+    }
+
+    // job seeker block
+    const jobSeekingEl = document.getElementById('jobSeeking');
+    if (jobSeekingEl && values.job_seeking !== undefined) jobSeekingEl.value = values.job_seeking;
+    jobSeekingEl?.dispatchEvent(new Event('change'));
+
+    const jobSeekerCount = parseInt(draft.jobSeekerCount || '0', 10) || 0;
+    if (jobSeekerCount > 0 && jobSeekingEl && (jobSeekingEl.value || '').startsWith('Yes')) {
+        const addBtn = document.getElementById('addJobSeekerBtn');
+        for (let i = 0; i < jobSeekerCount; i++) addBtn?.click();
+    }
+
+    // set all values
+    Object.entries(values).forEach(([name, value]) => {
+        const nodes = form.querySelectorAll(`[name="${CSS.escape(name)}"]`);
+        if (!nodes.length) return;
+
+        const first = nodes[0];
+
+        if (first.type === 'checkbox') {
+            const arr = Array.isArray(value) ? value : [value];
+            nodes.forEach(cb => { cb.checked = arr.includes(cb.value); });
+            return;
+        }
+
+        if (first.type === 'radio') {
+            nodes.forEach(r => { r.checked = (r.value === value); });
+            return;
+        }
+
+        first.value = value;
+    });
+
+    // refresh conditional UI
+    document.getElementById('maritalStatus')?.dispatchEvent(new Event('change'));
+    document.getElementById('riteSelect')?.dispatchEvent(new Event('change'));
+    document.querySelector('[name="head_blood_group"]')?.dispatchEvent(new Event('change'));
+    document.querySelector('[name="spouse_blood_group"]')?.dispatchEvent(new Event('change'));
+    updateDependents();
+
+    // go to saved step
+    const step = parseInt(draft.currentStep || '1', 10) || 1;
+    gotoStep(step);
+
+    showMessage('success', 'Draft loaded!', 2500);
+}
+
+    let draft;
+    try { draft = JSON.parse(raw); } catch (_) {
+        showMessage?.('error', 'Draft is corrupted and cannot be loaded.', 4000);
+        return;
+    }
+
+    const form = document.getElementById('censusForm');
+    if (!form) return;
+
+    const values = draft.values || draft;
+
+    // Restore children count
+    const savedChildrenCount = parseInt(values.num_children || '0', 10) || 0;
+    const numChildrenEl = document.getElementById('numChildren');
+    if (numChildrenEl) {
+        numChildrenEl.value = String(savedChildrenCount);
+        buildChildrenSections(savedChildrenCount);
+    }
+
+    // Restore job seeking
+    const jobSeekingEl = document.getElementById('jobSeeking');
+    if (jobSeekingEl && values.job_seeking !== undefined) {
+        jobSeekingEl.value = values.job_seeking;
+        const jobSeekerCount = parseInt(draft.jobSeekerCount || '0', 10) || 0;
+        if (jobSeekerCount > 0 && values.job_seeking && values.job_seeking.startsWith('Yes')) {
+            renderJobSeekers?.(jobSeekerCount);
+        }
+    }
+
+    // Restore all field values
+    Object.entries(values).forEach(([name, value]) => {
+        const fields = form.querySelectorAll(`[name="${CSS.escape(name)}"]`);
+        fields.forEach(field => {
+            if (field.type === 'checkbox') {
+                if (Array.isArray(value)) {
+                    field.checked = value.includes(field.value);
+                } else {
+                    field.checked = field.value === value;
+                }
+            } else if (field.type === 'radio') {
+                field.checked = field.value === value;
+            } else {
+                field.value = value;
+            }
+        });
+    });
+
+    // Restore current step
+    if (draft.currentStep && typeof gotoStep === 'function') {
+        gotoStep(draft.currentStep);
+    }
+
+    // Hide the Load Draft button after loading
+    const loadBtn = document.getElementById('loadDraftBtn');
+    if (loadBtn) loadBtn.classList.add('hidden');
+
+    showMessage?.('success', '✅ Draft loaded successfully!', 3000);
+}
 
     const form = document.getElementById('censusForm');
     if (!form) return;
