@@ -13,9 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     gotoStep(1, { skipScroll: true });
     loadDraft();
-    
-    // Navigation buttons
-    document.getElementById('loadDraftBtn')?.addEventListener('click', manualLoadDraft);
+
     document.getElementById('prevBtn')?.addEventListener('click', () => changeStep(-1));
     document.getElementById('nextBtn')?.addEventListener('click', () => changeStep(1));
 
@@ -500,14 +498,7 @@ function buildChildrenSections(num) {
     const safeNum = Math.max(0, Math.min(num, max));
 
     for (let i = 1; i <= safeNum; i++) {
-        const section = createChildSection(i);
-        container.appendChild(section);
-
-        // ✅ IMPORTANT: init datepicker AFTER section is in the DOM (mobile fix)
-        const dobInput = section.querySelector(`#child${i}Dob`);
-        if (dobInput && typeof window.initChildDatepicker === 'function') {
-            window.initChildDatepicker(dobInput);
-        }
+        container.appendChild(createChildSection(i));
     }
 
     applyValidationToElement?.(container);
@@ -565,8 +556,13 @@ function saveDraft(silent = false) {
     if (!form) return;
 
     const draft = {
-        currentStep,
-        timestamp: new Date().toISOString(),
+        __meta: {
+            currentStep,
+            timestamp: new Date().toISOString(),
+            num_children: parseInt(document.getElementById('numChildren')?.value || '0', 10),
+            jobSeekerCount: getCurrentJobSeekerCountFromDOM(),
+            job_seeking: document.getElementById('jobSeeking')?.value || ''
+        },
         values: {}
     };
 
@@ -594,10 +590,12 @@ function saveDraft(silent = false) {
         draft.values[name] = el.value;
     });
 
-    draft.jobSeekerCount = getCurrentJobSeekerCountFromDOM();
-
     localStorage.setItem('hfc_draft', JSON.stringify(draft));
-    if (!silent) showMessage('info', MESSAGES?.success?.draftSaved || 'Draft saved!', 2000);
+    
+    if (!silent) {
+        // Silent toast message (bottom-right, auto-fade)
+        showDraftToast('💾 Draft saved');
+    }
 }
 
 function getCurrentJobSeekerCountFromDOM() {
@@ -611,181 +609,120 @@ function loadDraft() {
     let draft;
     try { draft = JSON.parse(raw); } catch (_) { return; }
 
-    // Show the Load Draft button
-    const loadBtn = document.getElementById('loadDraftBtn');
-    if (loadBtn) loadBtn.classList.remove('hidden');
+    // Show non-intrusive banner instead of alert()
+    showDraftBanner(draft);
+}
 
-    // Show non-intrusive notification
-    if (typeof showMessage === 'function') {
-        showMessage('info', '💾 A saved draft was found. Click "Load Draft" button to restore it.', 8000);
-    }
-    return; // Don't auto-load
-
-function manualLoadDraft() {
-    console.log('Load Draft button clicked!'); // DEBUG
-    const raw = localStorage.getItem('hfc_draft');
-    console.log('Draft data:', raw); // DEBUG
+function showDraftBanner(draft) {
+    // Remove any existing banner
+    const existing = document.getElementById('draftBanner');
+    if (existing) existing.remove();
     
-    if (!raw) {
-        showMessage?.('warning', 'No saved draft found.', 3000);
-        return;
+    const meta = draft.__meta || {};
+    const timestamp = meta.timestamp || draft.timestamp;
+    const timeAgo = timestamp ? getTimeAgo(new Date(timestamp)) : 'recently';
+    
+    const banner = document.createElement('div');
+    banner.id = 'draftBanner';
+    banner.className = 'draft-banner';
+    banner.innerHTML = `
+        <div class="draft-banner-content">
+            <div class="draft-banner-icon">📄</div>
+            <div class="draft-banner-text">
+                <strong>Draft Found</strong>
+                <span>You have a saved draft from ${timeAgo}</span>
+            </div>
+            <div class="draft-banner-actions">
+                <button type="button" class="btn-draft-load" id="loadDraftBtn">Load Draft</button>
+                <button type="button" class="btn-draft-dismiss" id="dismissDraftBtn">Start Fresh</button>
+            </div>
+        </div>
+    `;
+    
+    const container = document.querySelector('.form-content');
+    if (container) {
+        container.insertBefore(banner, container.firstChild);
     }
-
-function manualLoadDraft() {
-    const raw = localStorage.getItem('hfc_draft');
-    if (!raw) {
-        showMessage('warning', 'No saved draft found.', 2500);
-        return;
-    }
-
-    let draft;
-    try { draft = JSON.parse(raw); } catch (_) {
-        showMessage('warning', 'Draft is corrupted and cannot be loaded.', 3000);
-        return;
-    }
-
-    const form = document.getElementById('censusForm');
-    if (!form) return;
-
-    const values = draft.values || draft;
-
-    // rebuild children first
-    const savedChildrenCount = parseInt(values.num_children || '0', 10) || 0;
-    const numChildrenEl = document.getElementById('numChildren');
-    if (numChildrenEl) {
-        numChildrenEl.value = String(savedChildrenCount);
-        buildChildrenSections(savedChildrenCount);
-    }
-
-    // job seeker block
-    const jobSeekingEl = document.getElementById('jobSeeking');
-    if (jobSeekingEl && values.job_seeking !== undefined) jobSeekingEl.value = values.job_seeking;
-    jobSeekingEl?.dispatchEvent(new Event('change'));
-
-    const jobSeekerCount = parseInt(draft.jobSeekerCount || '0', 10) || 0;
-    if (jobSeekerCount > 0 && jobSeekingEl && (jobSeekingEl.value || '').startsWith('Yes')) {
-        const addBtn = document.getElementById('addJobSeekerBtn');
-        for (let i = 0; i < jobSeekerCount; i++) addBtn?.click();
-    }
-
-    // set all values
-    Object.entries(values).forEach(([name, value]) => {
-        const nodes = form.querySelectorAll(`[name="${CSS.escape(name)}"]`);
-        if (!nodes.length) return;
-
-        const first = nodes[0];
-
-        if (first.type === 'checkbox') {
-            const arr = Array.isArray(value) ? value : [value];
-            nodes.forEach(cb => { cb.checked = arr.includes(cb.value); });
-            return;
-        }
-
-        if (first.type === 'radio') {
-            nodes.forEach(r => { r.checked = (r.value === value); });
-            return;
-        }
-
-        first.value = value;
+    
+    // Wire up buttons
+    document.getElementById('loadDraftBtn')?.addEventListener('click', () => {
+        banner.remove();
+        restoreDraft(draft);
     });
-
-    // refresh conditional UI
-    document.getElementById('maritalStatus')?.dispatchEvent(new Event('change'));
-    document.getElementById('riteSelect')?.dispatchEvent(new Event('change'));
-    document.querySelector('[name="head_blood_group"]')?.dispatchEvent(new Event('change'));
-    document.querySelector('[name="spouse_blood_group"]')?.dispatchEvent(new Event('change'));
-    updateDependents();
-
-    // go to saved step
-    const step = parseInt(draft.currentStep || '1', 10) || 1;
-    gotoStep(step);
-
-    showMessage('success', 'Draft loaded!', 2500);
+    
+    document.getElementById('dismissDraftBtn')?.addEventListener('click', () => {
+        banner.remove();
+        localStorage.removeItem('hfc_draft');
+        showDraftToast('Draft dismissed');
+    });
 }
 
-    let draft;
-    try { draft = JSON.parse(raw); } catch (_) {
-        showMessage?.('error', 'Draft is corrupted and cannot be loaded.', 4000);
-        return;
-    }
-
+function restoreDraft(draft) {
     const form = document.getElementById('censusForm');
     if (!form) return;
 
+    // CRITICAL: Structure-first restoration
+    const meta = draft.__meta || {};
     const values = draft.values || draft;
 
-    // Restore children count
-    const savedChildrenCount = parseInt(values.num_children || '0', 10) || 0;
-    const numChildrenEl = document.getElementById('numChildren');
-    if (numChildrenEl) {
-        numChildrenEl.value = String(savedChildrenCount);
-        buildChildrenSections(savedChildrenCount);
-    }
-
-    // Restore job seeking
-    const jobSeekingEl = document.getElementById('jobSeeking');
-    if (jobSeekingEl && values.job_seeking !== undefined) {
-        jobSeekingEl.value = values.job_seeking;
-        const jobSeekerCount = parseInt(draft.jobSeekerCount || '0', 10) || 0;
-        if (jobSeekerCount > 0 && values.job_seeking && values.job_seeking.startsWith('Yes')) {
-            renderJobSeekers?.(jobSeekerCount);
+    // Step 1: Restore num_children and trigger section creation
+    const savedChildrenCount = parseInt(meta.num_children || values.num_children || '0', 10);
+    if (savedChildrenCount > 0) {
+        const numChildrenEl = document.getElementById('numChildren');
+        if (numChildrenEl) {
+            numChildrenEl.value = String(savedChildrenCount);
+            // Trigger change event to build sections
+            numChildrenEl.dispatchEvent(new Event('change', { bubbles: true }));
         }
     }
 
-    // Restore all field values
-    Object.entries(values).forEach(([name, value]) => {
-        const fields = form.querySelectorAll(`[name="${CSS.escape(name)}"]`);
-        fields.forEach(field => {
-            if (field.type === 'checkbox') {
-                if (Array.isArray(value)) {
-                    field.checked = value.includes(field.value);
-                } else {
-                    field.checked = field.value === value;
-                }
-            } else if (field.type === 'radio') {
-                field.checked = field.value === value;
-            } else {
-                field.value = value;
+    // Step 2: Restore job seeking and trigger section creation
+    const jobSeekingEl = document.getElementById('jobSeeking');
+    const savedJobSeeking = meta.job_seeking || values.job_seeking || '';
+    if (jobSeekingEl && savedJobSeeking) {
+        jobSeekingEl.value = savedJobSeeking;
+        jobSeekingEl.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+
+    // Step 3: Wait for DOM updates, then restore job seeker blocks
+    setTimeout(() => {
+        const jobSeekerCount = parseInt(meta.jobSeekerCount || '0', 10);
+        if (jobSeekerCount > 0 && savedJobSeeking.startsWith('Yes')) {
+            const addBtn = document.getElementById('addJobSeekerBtn');
+            for (let i = 0; i < jobSeekerCount; i++) {
+                addBtn?.click();
             }
-        });
-    });
+        }
 
-    // Restore current step
-    if (draft.currentStep && typeof gotoStep === 'function') {
-        gotoStep(draft.currentStep);
-    }
+        // Step 4: Wait again, then populate all field values
+        setTimeout(() => {
+            populateFieldValues(form, values);
+            
+            // Step 5: Trigger conditional logic
+            document.getElementById('maritalStatus')?.dispatchEvent(new Event('change'));
+            document.getElementById('riteSelect')?.dispatchEvent(new Event('change'));
+            document.querySelector('[name="head_blood_group"]')?.dispatchEvent(new Event('change'));
+            document.querySelector('[name="spouse_blood_group"]')?.dispatchEvent(new Event('change'));
+            updateDependents();
 
-    // Hide the Load Draft button after loading
-    const loadBtn = document.getElementById('loadDraftBtn');
-    if (loadBtn) loadBtn.classList.add('hidden');
+            // Trigger child DOB changes to show/hide conditional fields
+            for (let i = 1; i <= savedChildrenCount; i++) {
+                const childDob = document.querySelector(`[name="child${i}_dob"]`);
+                if (childDob && childDob.value) {
+                    childDob.dispatchEvent(new Event('change', { bubbles: true }));
+                }
+            }
 
-    showMessage?.('success', '✅ Draft loaded successfully!', 3000);
+            // Step 6: Navigate to saved step
+            const step = parseInt(meta.currentStep || draft.currentStep || '1', 10);
+            gotoStep(step, { skipScroll: true });
+
+            showDraftToast('✅ Draft loaded successfully');
+        }, 150);
+    }, 150);
 }
 
-    const form = document.getElementById('censusForm');
-    if (!form) return;
-
-    const values = draft.values || draft;
-
-    const savedChildrenCount = parseInt(values.num_children || '0', 10) || 0;
-    const numChildrenEl = document.getElementById('numChildren');
-    if (numChildrenEl) {
-        numChildrenEl.value = String(savedChildrenCount);
-        buildChildrenSections(savedChildrenCount);
-    }
-
-    const jobSeekingEl = document.getElementById('jobSeeking');
-    if (jobSeekingEl && values.job_seeking !== undefined) {
-        jobSeekingEl.value = values.job_seeking;
-    }
-    jobSeekingEl?.dispatchEvent(new Event('change'));
-
-    const jobSeekerCount = parseInt(draft.jobSeekerCount || '0', 10) || 0;
-    if (jobSeekerCount > 0 && jobSeekingEl && (jobSeekingEl.value || '').startsWith('Yes')) {
-        const addBtn = document.getElementById('addJobSeekerBtn');
-        for (let i = 0; i < jobSeekerCount; i++) addBtn?.click();
-    }
-
+function populateFieldValues(form, values) {
     Object.entries(values).forEach(([name, value]) => {
         const nodes = form.querySelectorAll(`[name="${CSS.escape(name)}"]`);
         if (!nodes.length) return;
@@ -803,19 +740,14 @@ function manualLoadDraft() {
             return;
         }
 
+        // Handle Flatpickr date fields
+        if (first.classList.contains('flatpickr-input') && first._flatpickr) {
+            first._flatpickr.setDate(value, true);
+            return;
+        }
+
         first.value = value;
     });
-
-    document.getElementById('maritalStatus')?.dispatchEvent(new Event('change'));
-    document.getElementById('riteSelect')?.dispatchEvent(new Event('change'));
-    document.querySelector('[name="head_blood_group"]')?.dispatchEvent(new Event('change'));
-    document.querySelector('[name="spouse_blood_group"]')?.dispatchEvent(new Event('change'));
-    updateDependents();
-
-    const step = parseInt(draft.currentStep || '1', 10) || 1;
-    gotoStep(step);
-
-    showMessage('success', MESSAGES?.success?.draftLoaded || 'Draft loaded!', 2500);
 }
 
 function setupBilingualHelpers(root = document) {
@@ -972,4 +904,41 @@ function generateReview() {
         ).join('');
         return `<div class="review-section"><h3>${sec.title}</h3>${rows}</div>`;
     }).join('');
+}
+// ============================================================================
+// DRAFT UX HELPERS - Silent Toast & Time Display
+// ============================================================================
+
+function showDraftToast(message, duration = 2000) {
+    // Remove existing toast
+    const existing = document.getElementById('draftToast');
+    if (existing) existing.remove();
+    
+    const toast = document.createElement('div');
+    toast.id = 'draftToast';
+    toast.className = 'draft-toast';
+    toast.textContent = message;
+    
+    document.body.appendChild(toast);
+    
+    // Trigger animation
+    setTimeout(() => toast.classList.add('show'), 10);
+    
+    // Auto-remove
+    setTimeout(() => {
+        toast.classList.remove('show');
+        setTimeout(() => toast.remove(), 300);
+    }, duration);
+}
+
+function getTimeAgo(date) {
+    const seconds = Math.floor((new Date() - date) / 1000);
+    
+    if (seconds < 60) return 'just now';
+    if (seconds < 120) return '1 minute ago';
+    if (seconds < 3600) return `${Math.floor(seconds / 60)} minutes ago`;
+    if (seconds < 7200) return '1 hour ago';
+    if (seconds < 86400) return `${Math.floor(seconds / 3600)} hours ago`;
+    if (seconds < 172800) return 'yesterday';
+    return `${Math.floor(seconds / 86400)} days ago`;
 }
