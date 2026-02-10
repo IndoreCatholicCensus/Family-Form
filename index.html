@@ -9,8 +9,6 @@
 
 
 
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,9 +17,10 @@
     <meta name="description" content="Holy Family Church Pipliyakumar Family Information Form">
     <title>HFC Family Information Form</title>
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.2/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-    <script src="https://code.jquery.com/ui/1.14.2/jquery-ui.js"></script>
+    
+    <!-- Flatpickr Date Picker -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 </head>
 <body>
     <div class="container">
@@ -58,7 +57,7 @@
         <div class="form-content">
             <div id="messageContainer"></div>
 
-            <form id="censusForm" novalidate>
+            <form id="censusForm" novalidate autocomplete="off">
               <!-- ===== HONEYPOT ANTI-SPAM FIELDS (DO NOT REMOVE) ===== -->
               <!-- Hidden from humans, visible to bots. If filled, submission is rejected. -->
               <div style="position:absolute;left:-9999px;top:-9999px;opacity:0;pointer-events:none;" aria-hidden="true" tabindex="-1">
@@ -96,7 +95,7 @@
                         <div class="form-group">
                             <label class="required">DOB of Head</label>
                             <div class="sub-label">परिवार के मुखिया की जन्म तिथि चुनें</div>
-                            <input type="text" name="head_dob" class="datepicker" placeholder="Select Date" required readonly>
+                            <input type="date" name="head_dob" required>
                         </div>
                         <div class="form-group">
                             <label class="required">Place of Birth</label>
@@ -186,7 +185,7 @@
                             <div class="form-group">
                                 <label>DOB of Spouse</label>
                                 <div class="sub-label">जीवनसाथी की जन्म तिथि चुनें (यदि लागू हो)</div>
-                                <input type="text" name="spouse_dob" class="datepicker" placeholder="Select Date" readonly>
+                                <input type="date" name="spouse_dob">
                             </div>
                             <div class="form-group">
                                 <label>Blood Group</label>
@@ -442,10 +441,7 @@
                         <button type="submit" class="btn btn-primary hidden" id="submitBtn">Submit Form</button>
                     </div>
 
-                    <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                        <button type="button" class="btn btn-save-draft" onclick="saveDraft()">💾 Save Draft</button>
-                        <button type="button" class="btn btn-load-draft hidden" id="loadDraftBtn">📂 Load Draft</button>
-                    </div>
+                    <button type="button" class="btn btn-save-draft" onclick="saveDraft()">💾 Save Draft</button>
                 </div>
             </form>
         </div>
