@@ -1,12 +1,7 @@
 // ============================================================================
-// CHILDREN.JS - Dynamic Children Section Creation (FIXED VERSION)
+// CHILDREN.JS - Flatpickr Version
 // ============================================================================
 
-/**
- * FIX #3: Work status and marital status only appear after DOB is entered
- * and child is 18+. Education appears at age 3+.
- * FIX #4: Soft warning if child age >= parent age
- */
 function createChildSection(num) {
     const div = document.createElement('div');
     div.className = 'child-section';
@@ -30,7 +25,7 @@ function createChildSection(num) {
 
         <div class="form-group">
             <label class="required">Date of Birth</label>
-            <input type="text" name="child${num}_dob" id="child${num}Dob" required placeholder="Select date" readonly>
+            <input type="text" name="child${num}_dob" id="child${num}Dob" class="flatpickr-child" placeholder="Select Date" required>
             <input type="hidden" id="child${num}Age">
         </div>
 
@@ -57,14 +52,12 @@ function createChildSection(num) {
             <input type="text" name="child${num}_work_details" placeholder="Company / Role (optional)" maxlength="100">
         </div>
 
-        <!-- Mobile Number: Shows when age >= 18 -->
         <div class="form-group hidden" id="child${num}MobileGroup">
             <label>Mobile Number</label>
-            <input type="tel" name="child${num}_mobile" placeholder="98260 12345" data-type="phone" inputmode="numeric" autocomplete="tel" pattern="\d{10}" maxlength="13">
+            <input type="tel" name="child${num}_mobile" placeholder="98260 12345" data-type="phone" inputmode="numeric" autocomplete="tel" pattern="\\d{10}" maxlength="13">
             <div class="sub-label">Optional - for direct communication</div>
         </div>
 
-        <!-- Marital Status: Shows when age >= 18 -->
         <div class="form-group hidden" id="child${num}MaritalStatusGroup">
             <label class="required">Marital Status</label>
             <select name="child${num}_marital_status" id="child${num}MaritalStatus" required>
@@ -81,10 +74,9 @@ function createChildSection(num) {
 
         <div class="form-group hidden" id="child${num}SpouseMobileGroup">
             <label>Spouse Mobile Number</label>
-            <input type="tel" name="child${num}_spouse_mobile" placeholder="98260 12345" data-type="phone" inputmode="numeric" autocomplete="tel" pattern="\d{10}" maxlength="13">
+            <input type="tel" name="child${num}_spouse_mobile" placeholder="98260 12345" data-type="phone" inputmode="numeric" autocomplete="tel" pattern="\\d{10}" maxlength="13">
         </div>
 
-        <!-- FIX #4: Age warning -->
         <div class="message warning hidden" id="child${num}AgeWarning">
             ⚠️ Warning: Child age appears to be equal to or greater than a parent's age. Please verify the date of birth.
         </div>
@@ -92,19 +84,17 @@ function createChildSection(num) {
 
     setupChildEventListeners(num, div);
     
-    // Initialize Flatpickr for this child's DOB field
-    setTimeout(() => {
-        if (typeof initializeChildDatePicker === 'function') {
-            initializeChildDatePicker(num);
-        }
-    }, 100);
+    // Initialize Flatpickr for this child
+    const dobInput = div.querySelector(`#child${num}Dob`);
+    if (dobInput && typeof window.initChildFlatpickr === 'function') {
+        setTimeout(() => {
+            window.initChildFlatpickr(dobInput);
+        }, 100);
+    }
     
     return div;
 }
 
-/**
- * Setup event listeners for a child section
- */
 function setupChildEventListeners(num, div) {
     const dobInput = div.querySelector(`#child${num}Dob`);
     const ageHidden = div.querySelector(`#child${num}Age`);
@@ -119,7 +109,6 @@ function setupChildEventListeners(num, div) {
     const educationGroup = div.querySelector(`#child${num}EducationGroup`);
     const ageWarning = div.querySelector(`#child${num}AgeWarning`);
 
-    // FIX #4: Get parent ages for comparison
     function getParentAges() {
         const ages = [];
         const headDob = document.querySelector('input[name="head_dob"]')?.value;
@@ -133,7 +122,6 @@ function setupChildEventListeners(num, div) {
         dobInput.addEventListener('change', function () {
             const dob = this.value;
             if (!dob) {
-                // Hide all conditional fields if no DOB
                 educationGroup?.classList.add('hidden');
                 workStatusGroup?.classList.add('hidden');
                 workGroup?.classList.add('hidden');
@@ -148,7 +136,6 @@ function setupChildEventListeners(num, div) {
             const age = calculateAge(dob);
             if (ageHidden) ageHidden.value = String(age);
 
-            // FIX #3: Education gating (age >= 3)
             const minEduAge = FORM_CONFIG?.educationMinAge ?? 3;
             if (educationGroup) {
                 if (age >= minEduAge) {
@@ -165,7 +152,6 @@ function setupChildEventListeners(num, div) {
                 }
             }
 
-            // FIX #3: Work status and marital status only for adults (age >= 18)
             const adultAge = FORM_CONFIG?.adultAge ?? 18;
             
             if (workStatusGroup) {
@@ -186,7 +172,6 @@ function setupChildEventListeners(num, div) {
                 }
             }
 
-            // Show mobile number for adults (18+)
             if (mobileGroup) {
                 if (age >= adultAge) {
                     mobileGroup.classList.remove('hidden');
@@ -218,7 +203,6 @@ function setupChildEventListeners(num, div) {
                 }
             }
 
-            // FIX #4: Age warning if child >= parent age
             if (ageWarning) {
                 const parentAges = getParentAges();
                 if (parentAges.length > 0) {
@@ -235,7 +219,6 @@ function setupChildEventListeners(num, div) {
         });
     }
 
-    // Work status change handler
     if (workStatus) {
         workStatus.addEventListener('change', function () {
             if (!workGroup) return;
@@ -249,7 +232,6 @@ function setupChildEventListeners(num, div) {
         });
     }
 
-    // Marital status change handler
     if (maritalStatus) {
         maritalStatus.addEventListener('change', function () {
             if (this.value === 'Married') {
@@ -267,13 +249,9 @@ function setupChildEventListeners(num, div) {
     }
 }
 
-/**
- * Calculate age from date string
- */
 function calculateAge(dateString) {
     const birth = new Date(dateString);
     const today = new Date();
-
     let age = today.getFullYear() - birth.getFullYear();
     const m = today.getMonth() - birth.getMonth();
     if (m < 0 || (m === 0 && today.getDate() < birth.getDate())) {
@@ -281,3 +259,16 @@ function calculateAge(dateString) {
     }
     return age;
 }
+
+window.buildChildrenSections = function (count) {
+    const container = document.getElementById("childrenContainer");
+    if (!container) return;
+    const max = window.FORM_CONFIG?.maxChildren || 4;
+    const n = Math.max(0, Math.min(max, parseInt(count || "0", 10) || 0));
+    container.innerHTML = "";
+    for (let i = 1; i <= n; i++) {
+        container.appendChild(createChildSection(i));
+    }
+};
+
+window.calculateAge = window.calculateAge || calculateAge;
